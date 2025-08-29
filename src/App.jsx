@@ -525,16 +525,6 @@ const BoardManager = ({ boards, activeBoard, onSelectBoard, onCreateBoard, onJoi
                                 {(user?.displayName || 'P').charAt(0).toUpperCase()}
                             </div>
                         )}
-                        
-                        {/* Mini Level Indicator */}
-                        <div className="text-xs text-yellow-300 pixel-font mt-1">
-                            {level}
-                        </div>
-                    </div>
-                    
-                    {/* Board Count */}
-                    <div className="text-xs text-gray-400 pixel-font" title={`${boards.length} boards`}>
-                        {boards.length}
                     </div>
                     
                     {/* Sound Toggle */}
