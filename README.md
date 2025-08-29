@@ -75,13 +75,56 @@ A retro-style, gamified Kanban board application with pixel art aesthetics, real
    };
    ```
 
-4. **Start development server**
+4. **Environment Variables**
+   Create a `.env` file in the project root with your Firebase configuration:
+   ```bash
+   VITE_API_KEY=your_firebase_api_key
+   VITE_AUTH_DOMAIN=your_project_id.firebaseapp.com
+   VITE_PROJECT_ID=your_firebase_project_id
+   VITE_STORAGE_BUCKET=your_project_id.appspot.com
+   VITE_MESSAGING_SENDER_ID=your_messaging_sender_id
+   VITE_APP_ID=your_firebase_app_id
+   ```
+
+5. **Start development server**
    ```bash
    npm run dev
    ```
 
-5. **Open your browser**
+6. **Open your browser**
    Navigate to `http://localhost:5173` (or the port shown in terminal)
+
+## 🚀 Deployment
+
+### Vercel Deployment
+
+1. **Push to GitHub**
+   ```bash
+   git add .
+   git commit -m "Deploy to Vercel"
+   git push origin main
+   ```
+
+2. **Connect to Vercel**
+   - Go to [Vercel.com](https://vercel.com) and sign in with GitHub
+   - Import your repository
+   - Configure environment variables in Vercel dashboard:
+     - `VITE_API_KEY`
+     - `VITE_AUTH_DOMAIN`
+     - `VITE_PROJECT_ID`
+     - `VITE_STORAGE_BUCKET`
+     - `VITE_MESSAGING_SENDER_ID`
+     - `VITE_APP_ID`
+
+3. **Deploy**
+   - Vercel will automatically build and deploy your app
+   - Add your Vercel domain to Firebase Auth authorized domains
+
+### Other Platforms
+The app can be deployed to any static hosting service:
+- **Netlify**: Similar process to Vercel
+- **Firebase Hosting**: Use `firebase deploy`
+- **GitHub Pages**: Build and deploy static files
 
 ## 🛠️ Tech Stack
 

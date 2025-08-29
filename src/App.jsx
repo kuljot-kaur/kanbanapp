@@ -75,21 +75,21 @@ const firebaseConfig = {
 let app;
 let db;
 let auth;
+let googleProvider;
+
 // Only initialize Firebase if the config keys are present
 if (firebaseConfig.apiKey) {
     app = initializeApp(firebaseConfig);
     db = getFirestore(app);
     auth = getAuth(app);
+    googleProvider = new GoogleAuthProvider();
     try { enableIndexedDbPersistence(db); } catch (err) { console.warn(`Firebase persistence error: ${err.code}`); }
+} else {
+    console.error('Firebase configuration is missing. Please check your environment variables.');
 }
 
 const rawAppId = typeof __app_id !== 'undefined' ? __app_id : 'default-kanban-app';
 const appId = rawAppId.replace(/\//g, '_'); // Sanitize appId to be a valid path segment
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const auth = getAuth(app);
-const googleProvider = new GoogleAuthProvider();
-try { enableIndexedDbPersistence(db); } catch (err) { console.warn(`Firebase persistence error: ${err.code}`); }
 
 // --- Firestore Collection References ---
 const boardsColPath = `artifacts/${appId}/public/data/boards`;
