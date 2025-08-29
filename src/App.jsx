@@ -58,6 +58,23 @@ const SoundOffIcon = () => (
         <line x1="23" y1="1" x2="1" y2="23" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
     </svg>
 );
+const MenuIcon = () => (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" style={{ imageRendering: 'pixelated' }}>
+        <rect x="3" y="6" width="18" height="2" fill="currentColor"/>
+        <rect x="3" y="11" width="18" height="2" fill="currentColor"/>
+        <rect x="3" y="16" width="18" height="2" fill="currentColor"/>
+    </svg>
+);
+const ChevronLeftIcon = () => (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" style={{ imageRendering: 'pixelated' }}>
+        <path d="M15 18L9 12L15 6" stroke="currentColor" strokeWidth="2" strokeLinecap="square" strokeLinejoin="round"/>
+    </svg>
+);
+const ChevronRightIcon = () => (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" style={{ imageRendering: 'pixelated' }}>
+        <path d="M9 18L15 12L9 6" stroke="currentColor" strokeWidth="2" strokeLinecap="square" strokeLinejoin="round"/>
+    </svg>
+);
 
 
 // --- Firebase Initialization ---
@@ -474,7 +491,7 @@ const Board = ({ board, tasks, onUpdateTask, onDeleteTask, onAddTask, onEditTask
 };
 
 
-const BoardManager = ({ boards, activeBoard, onSelectBoard, onCreateBoard, onJoinBoard, onDeleteBoard, userId, level, xp, xpToNextLevel, isMuted, setIsMuted, user, onSignOut }) => {
+const BoardManager = ({ boards, activeBoard, onSelectBoard, onCreateBoard, onJoinBoard, onDeleteBoard, userId, level, xp, xpToNextLevel, isMuted, setIsMuted, user, onSignOut, isCollapsed, onToggleCollapse }) => {
     const [newBoardName, setNewBoardName] = useState('');
     const [joinBoardId, setJoinBoardId] = useState('');
 
@@ -483,9 +500,68 @@ const BoardManager = ({ boards, activeBoard, onSelectBoard, onCreateBoard, onJoi
 
     const xpPercentage = (xp / xpToNextLevel) * 100;
 
+    if (isCollapsed) {
+        return (
+            <aside className="bg-[#0b101f] p-2 flex flex-col pixel-border-right flex-shrink-0 w-16 transition-all duration-300">
+                <div className="flex flex-col items-center space-y-4">
+                    <button 
+                        onClick={onToggleCollapse}
+                        className="p-2 text-purple-400 hover:text-purple-300 transition-colors"
+                        title="Expand Sidebar"
+                    >
+                        <ChevronRightIcon />
+                    </button>
+                    
+                    {/* Minimized User Avatar */}
+                    <div className="flex flex-col items-center" title={user?.displayName || 'Player'}>
+                        {user?.photoURL ? (
+                            <img 
+                                src={user.photoURL} 
+                                alt="Profile" 
+                                className="w-10 h-10 rounded-full border-2 border-purple-400"
+                            />
+                        ) : (
+                            <div className="w-10 h-10 rounded-full bg-purple-600 border-2 border-purple-400 flex items-center justify-center text-white pixel-font text-sm">
+                                {(user?.displayName || 'P').charAt(0).toUpperCase()}
+                            </div>
+                        )}
+                        
+                        {/* Mini Level Indicator */}
+                        <div className="text-xs text-yellow-300 pixel-font mt-1">
+                            {level}
+                        </div>
+                    </div>
+                    
+                    {/* Board Count */}
+                    <div className="text-xs text-gray-400 pixel-font" title={`${boards.length} boards`}>
+                        {boards.length}
+                    </div>
+                    
+                    {/* Sound Toggle */}
+                    <button 
+                        onClick={() => setIsMuted(!isMuted)} 
+                        className="p-2 text-gray-400 hover:text-white transition-colors"
+                        title={isMuted ? "Unmute" : "Mute"}
+                    >
+                        {isMuted ? <SoundOffIcon /> : <SoundOnIcon />}
+                    </button>
+                </div>
+            </aside>
+        );
+    }
+
     return (
-        <aside className="bg-[#0b101f] p-4 flex flex-col pixel-border-right flex-shrink-0 w-64">
-            <h1 className="text-2xl font-bold text-purple-400 pixel-font mb-4">Quest Boards</h1>
+        <aside className="bg-[#0b101f] p-4 flex flex-col pixel-border-right flex-shrink-0 w-64 transition-all duration-300">
+            <div className="flex items-center justify-between mb-4">
+                <h1 className="text-2xl font-bold text-purple-400 pixel-font">Quest Boards</h1>
+                <button 
+                    onClick={onToggleCollapse}
+                    className="p-1 text-purple-400 hover:text-purple-300 transition-colors"
+                    title="Collapse Sidebar"
+                >
+                    <ChevronLeftIcon />
+                </button>
+            </div>
             
             {/* User Info */}
             <div className="mb-4 p-3 bg-[#212c47] rounded pixel-border-sm">
@@ -616,12 +692,14 @@ export default function App() {
     const [xp, setXp] = useState(() => parseInt(localStorage.getItem('xp')) || 0);
     const [showLevelUp, setShowLevelUp] = useState(false);
     const [lastXpGained, setLastXpGained] = useState(0);
+    const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(() => localStorage.getItem('sidebarCollapsed') === 'true');
 
     const xpToNextLevel = level * 100;
     
     useEffect(() => { localStorage.setItem('isMuted', isMuted); }, [isMuted]);
     useEffect(() => { localStorage.setItem('level', level); }, [level]);
     useEffect(() => { localStorage.setItem('xp', xp); }, [xp]);
+    useEffect(() => { localStorage.setItem('sidebarCollapsed', isSidebarCollapsed); }, [isSidebarCollapsed]);
 
     const addXp = (amount) => {
         setLastXpGained(amount);
@@ -935,8 +1013,21 @@ export default function App() {
                 setIsMuted={setIsMuted}
                 user={user}
                 onSignOut={handleSignOut}
+                isCollapsed={isSidebarCollapsed}
+                onToggleCollapse={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
             />
-            <div className="flex-1 flex flex-col overflow-hidden">
+            <div className="flex-1 flex flex-col overflow-hidden relative">
+                {/* Floating sidebar toggle for collapsed state */}
+                {isSidebarCollapsed && (
+                    <button 
+                        onClick={() => setIsSidebarCollapsed(false)}
+                        className="fixed top-4 left-4 z-30 p-2 bg-purple-600 text-white rounded-lg shadow-lg hover:bg-purple-500 transition-colors pixel-font border-2 border-purple-400"
+                        title="Open Sidebar"
+                    >
+                        <MenuIcon />
+                    </button>
+                )}
+                
                 {activeBoard ? ( <Board 
                                     board={activeBoard} 
                                     tasks={tasks} 
