@@ -178,4 +178,52 @@
       background: #8b5cf6; /* More visible on mobile */
     }
   }
+
+  /* Smooth scroll behavior for better mobile experience */
+  .scroll-smooth {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch; /* iOS momentum scrolling */
+  }
+
+  /* Enhanced mobile scrolling for horizontal containers */
+  @supports (-webkit-overflow-scrolling: touch) {
+    .overflow-x-auto {
+      -webkit-overflow-scrolling: touch;
+    }
+  }
+
+  /* Scroll snap for better column navigation on mobile */
+  .scroll-snap-x {
+    scroll-snap-type: x proximity;
+  }
+
+  .scroll-snap-start {
+    scroll-snap-align: start;
+  }
+
+  /* Better touch scrolling performance */
+  .touch-pan-x {
+    touch-action: pan-x;
+  }
+
+  /* Mobile scroll indicators */
+  @media (max-width: 768px) {
+    .mobile-scroll-hint::after {
+      content: '← Swipe to see more columns →';
+      position: absolute;
+      bottom: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.75rem;
+      color: #9ca3af;
+      pointer-events: none;
+      opacity: 0.7;
+      animation: fade-in-out 3s ease-in-out;
+    }
+
+    @keyframes fade-in-out {
+      0%, 100% { opacity: 0; }
+      50% { opacity: 0.7; }
+    }
+  }
 }
