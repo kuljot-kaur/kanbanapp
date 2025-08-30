@@ -358,7 +358,7 @@ const Column = ({ title, tasks, onAddTask, onEditTask, onDeleteTask, onDrop, onD
             onDragOver={onDragOver} 
             onDragEnter={onDragEnter} 
             onDragLeave={onDragLeave} 
-            className={`flex-1 flex flex-col min-w-[320px] max-h-full bg-[#000]/20 rounded-lg p-2 transition-all duration-300 pixel-border-sm border-2 ${isDraggingOver ? columnStyles[color].glow : 'border-transparent'}`}
+            className={`flex-1 flex flex-col min-w-[280px] sm:min-w-[320px] max-h-full bg-[#000]/20 rounded-lg p-2 transition-all duration-300 pixel-border-sm border-2 ${isDraggingOver ? columnStyles[color].glow : 'border-transparent'}`}
         >
             <div className={`flex justify-between items-center mb-4 p-2 rounded-md ${columnStyles[color].header}`}>
                 <h3 className="font-bold text-base pixel-font">{title}</h3>
@@ -454,7 +454,7 @@ const Board = ({ board, tasks, onUpdateTask, onDeleteTask, onAddTask, onEditTask
     };
 
     return (
-        <div className="flex-1 p-4 md:p-8 flex flex-col h-full max-h-screen overflow-hidden">
+        <div className="flex-1 p-4 md:p-8 flex flex-col h-full max-h-screen">
             <header className="mb-4 flex-shrink-0">
                 <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-2 md:gap-4">
                     <div className="flex-shrink-0">
@@ -481,7 +481,7 @@ const Board = ({ board, tasks, onUpdateTask, onDeleteTask, onAddTask, onEditTask
                     </div>
                 </div>
             </header>
-            <main className="flex gap-4 md:gap-8 h-full pb-8">
+            <main className="flex gap-4 md:gap-8 h-full pb-8 overflow-x-auto overflow-y-hidden scrollbar-thin">
                  <Column title="To Do" tasks={sortedAndFilteredTasks('To Do')} onAddTask={() => onAddTask('To Do')} onEditTask={onEditTask} onDeleteTask={onDeleteTask} onDrop={(e) => handleDrop(e, 'To Do')} onDragOver={handleDragOver} onDragStart={handleDragStart} onDragEnter={() => setDraggedOverColumn('To Do')} onDragLeave={() => setDraggedOverColumn(null)} isDraggingOver={draggedOverColumn === 'To Do'} color="cyan" draggingTaskId={draggingTaskId}/>
                  <Column title="In Progress" tasks={sortedAndFilteredTasks('In Progress')} onAddTask={() => onAddTask('In Progress')} onEditTask={onEditTask} onDeleteTask={onDeleteTask} onDrop={(e) => handleDrop(e, 'In Progress')} onDragOver={handleDragOver} onDragStart={handleDragStart} onDragEnter={() => setDraggedOverColumn('In Progress')} onDragLeave={() => setDraggedOverColumn(null)} isDraggingOver={draggedOverColumn === 'In Progress'} color="orange" draggingTaskId={draggingTaskId}/>
                  <Column title="Done" tasks={sortedAndFilteredTasks('Done')} onAddTask={() => onAddTask('Done')} onEditTask={onEditTask} onDeleteTask={onDeleteTask} onDrop={(e) => handleDrop(e, 'Done')} onDragOver={handleDragOver} onDragStart={handleDragStart} onDragEnter={() => setDraggedOverColumn('Done')} onDragLeave={() => setDraggedOverColumn(null)} isDraggingOver={draggedOverColumn === 'Done'} color="lime" draggingTaskId={draggingTaskId}/>
