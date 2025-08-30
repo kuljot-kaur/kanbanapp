@@ -358,13 +358,13 @@ const Column = ({ title, tasks, onAddTask, onEditTask, onDeleteTask, onDrop, onD
             onDragOver={onDragOver} 
             onDragEnter={onDragEnter} 
             onDragLeave={onDragLeave} 
-            className={`flex-1 flex flex-col min-w-[320px] bg-[#000]/20 rounded-lg p-2 transition-all duration-300 pixel-border-sm border-2 ${isDraggingOver ? columnStyles[color].glow : 'border-transparent'}`}
+            className={`flex-1 flex flex-col min-w-[320px] max-h-full bg-[#000]/20 rounded-lg p-2 transition-all duration-300 pixel-border-sm border-2 ${isDraggingOver ? columnStyles[color].glow : 'border-transparent'}`}
         >
             <div className={`flex justify-between items-center mb-4 p-2 rounded-md ${columnStyles[color].header}`}>
                 <h3 className="font-bold text-base pixel-font">{title}</h3>
                 <button onClick={onAddTask} className="p-1 rounded-full hover:bg-white/20 transition-colors"><PlusIcon /></button>
             </div>
-            <div className="flex-grow rounded-md p-1 min-h-[100px]">
+            <div className="flex-1 rounded-md p-1 min-h-[100px] overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-track-gray-800 scrollbar-thumb-purple-600 hover:scrollbar-thumb-purple-500">
                  {tasks.map(task => <TaskCard key={task.id} task={task} onEdit={onEditTask} onDelete={onDeleteTask} onDragStart={onDragStart} isDragging={draggingTaskId === task.id} />)}
                  {isDraggingOver && <div className="h-16 rounded-md bg-white/10 pixel-border-dashed mt-4 animate-fade-in"></div>}
             </div>
@@ -454,8 +454,8 @@ const Board = ({ board, tasks, onUpdateTask, onDeleteTask, onAddTask, onEditTask
     };
 
     return (
-        <div className="flex-1 p-4 md:p-8 flex flex-col h-full overflow-x-auto overflow-y-hidden">
-            <header className="mb-4">
+        <div className="flex-1 p-4 md:p-8 flex flex-col h-full max-h-screen overflow-hidden">
+            <header className="mb-4 flex-shrink-0">
                 <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-2 md:gap-4">
                     <div className="flex-shrink-0">
                          <h2 className="text-2xl font-bold text-purple-400 pixel-font truncate">{board.name}</h2>

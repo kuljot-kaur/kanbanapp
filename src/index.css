@@ -130,4 +130,40 @@
       inset -1px -1px 0 rgba(255, 255, 255, 0.1),
       0 0 0 2px rgba(168, 85, 247, 0.3);
   }
+
+  /* Custom Scrollbar Styles */
+  .scrollbar-thin {
+    scrollbar-width: thin;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: #1e293b;
+    border-radius: 4px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: #7c3aed;
+    border-radius: 4px;
+    border: 1px solid #1e293b;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    background: #8b5cf6;
+  }
+
+  .scrollbar-track-gray-800 {
+    scrollbar-color: #7c3aed #1e293b;
+  }
+
+  .scrollbar-thumb-purple-600::-webkit-scrollbar-thumb {
+    background: #7c3aed;
+  }
+
+  .hover\:scrollbar-thumb-purple-500:hover::-webkit-scrollbar-thumb {
+    background: #8b5cf6;
+  }
 }
